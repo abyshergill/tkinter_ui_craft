@@ -563,7 +563,7 @@
 
                 elementsRegistry.forEach(el => {
                     code += `        # Widget: ${el.varName}\n`;
-                    code += generateWidgetInstanciation(el, 'self.', 'root');
+                    code += generateWidgetInstanciation(el, 'self.', 'root', '        ');
                     code += `        self.${el.varName}.place(x=${el.x}, y=${el.y}, width=${el.w}, height=${el.h})\n\n`;
                 });
 
@@ -581,7 +581,7 @@
 
                 elementsRegistry.forEach(el => {
                     code += `# Widget: ${el.varName}\n`;
-                    code += generateWidgetInstanciation(el, '', 'root');
+                    code += generateWidgetInstanciation(el, '', 'root', '');
                     code += `${el.varName}.place(x=${el.x}, y=${el.y}, width=${el.w}, height=${el.h})\n\n`;
                 });
 
@@ -592,7 +592,7 @@
         }
 
         // --- Inner helper mapping Tk constructor details ---
-        function generateWidgetInstanciation(el, varPrefix, parentVar) {
+        function generateWidgetInstanciation(el, varPrefix, parentVar, indent) {
             const fontStr = `font=("Arial", ${el.fontSize}, "${el.fontWeight}")`;
             const bgStr = el.bg === 'transparent' ? '' : `, bg="${el.bg}"`;
             const fgStr = `, fg="${el.fg}"`;
@@ -603,26 +603,26 @@
             const v = `${varPrefix}${el.varName}`;
 
             if (el.type === 'Button') {
-                inst = `${v} = tk.Button(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Button(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Label') {
-                inst = `${v} = tk.Label(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Label(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Entry') {
-                inst = `${v} = tk.Entry(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Entry(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Text') {
-                inst = `${v} = tk.Text(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Text(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Checkbutton') {
-                inst = `${v} = tk.Checkbutton(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Checkbutton(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Radiobutton') {
-                inst = `${v} = tk.Radiobutton(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Radiobutton(${parentVar}, text="${el.text}"${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Listbox') {
-                inst = `${v} = tk.Listbox(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Listbox(${parentVar}${bgStr}${fgStr}, ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Scale') {
-                inst = `${v} = tk.Scale(${parentVar}, label="${el.text}"${bgStr}${fgStr}, orient="horizontal", ${fontStr}${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Scale(${parentVar}, label="${el.text}"${bgStr}${fgStr}, orient="horizontal", ${fontStr}${bdStr}${reliefStr})\n`;
             } else if (el.type === 'Progressbar') {
                 // TTK widgets do not accept standard font/bg overrides
-                inst = `${v} = ttk.Progressbar(${parentVar}, orient="horizontal", mode="determinate")\n`;
+                inst = `${indent}${v} = ttk.Progressbar(${parentVar}, orient="horizontal", mode="determinate")\n`;
             } else if (el.type === 'Frame') {
-                inst = `${v} = tk.Frame(${parentVar}, bg="${el.bg}"${bdStr}${reliefStr})\n`;
+                inst = `${indent}${v} = tk.Frame(${parentVar}, bg="${el.bg}"${bdStr}${reliefStr})\n`;
             }
 
             return inst;
