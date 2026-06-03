@@ -1,0 +1,162 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+/* Custom scrollbar styling for a premium feel */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Canvas workspace setup */
+#canvas-wrapper {
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 15px 15px;
+}
+
+/* Drag-drop elements styling */
+.placed-element {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.placed-element.selected {
+    outline: 2px solid #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+/* Resizer handle anchor */
+.resize-handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #4f46e5;
+    border: 1px solid #ffffff;
+    bottom: -4px;
+    right: -4px;
+    cursor: se-resize;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+/* Simulated TK styles mapping standard visual identity */
+.tk-button {
+    border: 1px solid #94a3b8;
+    font-size: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 1px rgba(0,0,0,0.05);
+    border-radius: 3px;
+}
+.tk-label {
+    background: transparent;
+    font-size: 12px;
+}
+.tk-entry {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+.tk-checkbutton {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 12px;
+}
+.tk-checkbutton::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #475569;
+    background: #ffffff;
+    border-radius: 2px;
+}
+.tk-radiobutton {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 12px;
+}
+.tk-radiobutton::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #475569;
+    background: #ffffff;
+    border-radius: 50%;
+}
+.tk-text {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 2px;
+    font-size: 11px;
+}
+.tk-listbox {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    font-size: 12px;
+    border-radius: 2px;
+}
+.tk-scale {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+}
+.tk-scale-track {
+    width: 100%;
+    height: 6px;
+    background-color: #cbd5e1;
+    border-radius: 3px;
+    position: relative;
+}
+.tk-scale-handle {
+    width: 10px;
+    height: 14px;
+    background: #64748b;
+    border: 1px solid #475569;
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1px;
+}
+.tk-progressbar {
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.tk-progressbar-fill {
+    width: 45%;
+    height: 100%;
+    background-color: #22c55e;
+}
+.tk-frame {
+    border: 2px dashed #94a3b8;
+    background-color: rgba(241, 245, 249, 0.4);
+    border-radius: 4px;
+}

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleek Drag & Drop Tkinter UI Builder</title>
+    <script src="./js/tailwindcdn.js"></script>
+    <link rel="stylesheet" href="./css/style.css"> 
+</head>
+<body class="flex flex-col h-screen overflow-hidden select-none">
+
+    <!-- Chosen Palette: Indigo Accent with neutral slate tones for an immersive workspace -->
+    <!-- Application Structure Plan: Split pane interface with a modular workflow.
+         1. Left panel: Component Library featuring classic standard TK and TTK components with visual mock indicators.
+         2. Center pane: Adaptive Visual Canvas fitted in a structural simulation OS frame wrapper with active zooming/sizing context.
+         3. Right pane: Dynamic Tabbed properties controller switching between Window parameters and Widget customization attributes.
+         4. Code Export Modal: Instant dual-format rendering engine allowing functional script or OOP class template visualization. -->
+    <!-- Visualization & Content Choices: Left panels use drag indicators. Center canvas provides direct mouse listener interaction mapping coordinates relative to frame bounds. Right inspector triggers live DOM visual attribute updates. Confirmation: No SVGs or Mermaid JS elements loaded. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Action Hub Header -->
+    <header class="h-14 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 z-30 shrink-0">
+        <div class="flex items-center gap-3">
+            <span class="text-white font-bold text-lg tracking-wide flex items-center gap-2">
+                <span class="bg-indigo-600 text-white w-7 h-7 flex items-center justify-center rounded-lg text-sm">Py</span>
+                Tkinter UI Craft
+            </span>
+            <span class="bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded border border-slate-700">v2.1 Stable</span>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700">
+                <button onclick="setSnap(1)" id="snap-1" class="snap-btn px-2.5 py-1 text-xs font-semibold rounded text-slate-400 hover:text-white transition-all">No Snap</button>
+                <button onclick="setSnap(5)" id="snap-5" class="snap-btn px-2.5 py-1 text-xs font-semibold rounded text-slate-400 hover:text-white transition-all">5px</button>
+                <button onclick="setSnap(10)" id="snap-10" class="snap-btn px-2.5 py-1 text-xs font-semibold rounded bg-indigo-600 text-white shadow-sm transition-all">10px</button>
+                <button onclick="setSnap(20)" id="snap-20" class="snap-btn px-2.5 py-1 text-xs font-semibold rounded text-slate-400 hover:text-white transition-all">20px</button>
+            </div>
+            
+            <button onclick="clearCanvas()" class="px-3 py-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all font-medium">
+                Clear Frame
+            </button>
+            <button onclick="openPreviewModal()" class="px-3 py-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all font-medium">
+                View Python Code
+            </button>
+            <button onclick="exportPythonCode()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-1.5 text-xs font-bold rounded-lg shadow-lg hover:shadow-indigo-500/10 transition-all flex items-center gap-1.5">
+                Download Code
+            </button>
+        </div>
+    </header>
+
+    <!-- Master Workspace Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar: Widgets Vendor -->
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">TK Standard Widgets</h3>
+                <p class="text-[10px] text-slate-500 mt-1">Drag elements onto the canvas, or click to spawn instantly.</p>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Label" onclick="spawnWidget('Label')">
+                    <span class="text-xs font-semibold text-slate-700">Label</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">Label</span>
+                </div>
+                
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Button" onclick="spawnWidget('Button')">
+                    <span class="text-xs font-semibold text-slate-700">Button</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">Button</span>
+                </div>
+                
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Entry" onclick="spawnWidget('Entry')">
+                    <span class="text-xs font-semibold text-slate-700">Entry (Single Input)</span>
+                    <span class="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-medium">Entry</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Text" onclick="spawnWidget('Text')">
+                    <span class="text-xs font-semibold text-slate-700">Text (Multi-line Area)</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">Text</span>
+                </div>
+                
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Checkbutton" onclick="spawnWidget('Checkbutton')">
+                    <span class="text-xs font-semibold text-slate-700">Checkbutton</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">Check</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Radiobutton" onclick="spawnWidget('Radiobutton')">
+                    <span class="text-xs font-semibold text-slate-700">Radiobutton</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">Radio</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Listbox" onclick="spawnWidget('Listbox')">
+                    <span class="text-xs font-semibold text-slate-700">Listbox</span>
+                    <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-medium">List</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Scale" onclick="spawnWidget('Scale')">
+                    <span class="text-xs font-semibold text-slate-700">Scale (Slider)</span>
+                    <span class="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-mono font-medium">Scale</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Progressbar" onclick="spawnWidget('Progressbar')">
+                    <span class="text-xs font-semibold text-slate-700">Progressbar (ttk)</span>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-medium">Progress</span>
+                </div>
+
+                <div class="draggable-item flex items-center justify-between p-3 bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 rounded-lg cursor-grab transition-all" 
+                     draggable="true" data-type="Frame" onclick="spawnWidget('Frame')">
+                    <span class="text-xs font-semibold text-slate-700">Frame Layout Container</span>
+                    <span class="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-mono font-medium">Frame</span>
+                </div>
+
+            </div>
+            
+            <div class="p-4 border-t border-slate-100 bg-slate-50 text-[11px] text-slate-500">
+                <p class="font-semibold text-slate-700 mb-1">💡 Pro Tip:</p>
+                Use Arrow Keys to nudge selected widgets by 1px (or holds Shift for 10px). Press Del/Backspace to remove selected widget.
+            </div>
+        </aside>
+
+        <!-- Center Screen Canvas Workspace -->
+        <main class="flex-1 flex flex-col overflow-hidden" id="canvas-container">
+            <div class="bg-slate-100 flex-1 overflow-auto p-8 flex items-center justify-center relative" id="canvas-wrapper">
+                
+                <!-- Simulated Operating System Window Wrapper -->
+                <div class="bg-white shadow-2xl rounded-xl border border-slate-300 overflow-hidden flex flex-col relative transition-all" 
+                     style="width: 800px; height: 600px; min-width: 400px; min-height: 300px;" id="tk-window-frame">
+                     
+                     <!-- Window Title Bar -->
+                     <div class="bg-slate-200 px-4 py-2 flex items-center justify-between border-b border-slate-300 shrink-0 select-none">
+                         <div class="flex items-center gap-2">
+                             <!-- Simulated red, yellow, green operating system nodes -->
+                             <span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+                             <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                             <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+                             <span class="text-xs font-semibold text-slate-600 ml-2 font-mono" id="simulated-title">Generated App Blueprint Layout</span>
+                         </div>
+                         <div class="text-[10px] text-slate-400 font-mono" id="simulated-dimensions">800 x 600</div>
+                     </div>
+                     
+                     <!-- Active Drag-Drop Canvas Area -->
+                     <div class="flex-1 bg-slate-50 relative overflow-hidden" id="canvas"></div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Properties & Settings -->
+        <aside class="w-80 bg-white border-l border-slate-200 flex flex-col shrink-0">
+            <!-- Properties Tab System header -->
+            <div class="flex border-b border-slate-200 bg-slate-50">
+                <button onclick="setRightTab('widget')" id="tab-widget-btn" class="flex-1 py-3 text-xs font-semibold text-center border-b-2 border-indigo-600 text-indigo-600">
+                    Widget Props
+                </button>
+                <button onclick="setRightTab('window')" id="tab-window-btn" class="flex-1 py-3 text-xs font-semibold text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                    Window Settings
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-5">
+                
+                <!-- WIDGET PROPERTIES TAB CONTENT -->
+                <div id="tab-widget" class="space-y-4">
+                    <p id="no-selection-msg" class="text-xs text-slate-400 italic text-center py-10">
+                        Select a widget on the canvas to configure properties.
+                    </p>
+                    
+                    <div id="editor-fields" class="hidden flex-col gap-4">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Widget ID</label>
+                                <input type="text" id="prop-id" disabled class="mt-1 w-full bg-slate-100 text-slate-500 border border-slate-200 rounded p-1.5 text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Variable</label>
+                                <input type="text" id="prop-var" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs font-mono focus:border-indigo-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Display Text</label>
+                            <input type="text" id="prop-text" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-2 text-xs focus:border-indigo-500 outline-none">
+                        </div>
+
+                        <!-- Placement configuration values -->
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200/60">
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Coordinates & Sizing</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">X Position (px)</label>
+                                    <input type="number" id="prop-x" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Y Position (px)</label>
+                                    <input type="number" id="prop-y" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Width (px)</label>
+                                    <input type="number" id="prop-w" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Height (px)</label>
+                                    <input type="number" id="prop-h" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stylization options -->
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200/60 space-y-3">
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Styling Parameters</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Bg Color</label>
+                                    <div class="flex gap-1 mt-1">
+                                        <input type="color" id="prop-bg" oninput="updateCurrentElement()" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                                        <input type="text" id="prop-bg-hex" oninput="updateHexColor('bg')" class="w-full border border-slate-200 rounded px-1.5 py-1 text-xs font-mono outline-none">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Fg Color</label>
+                                    <div class="flex gap-1 mt-1">
+                                        <input type="color" id="prop-fg" oninput="updateCurrentElement()" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                                        <input type="text" id="prop-fg-hex" oninput="updateHexColor('fg')" class="w-full border border-slate-200 rounded px-1.5 py-1 text-xs font-mono outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Font Size</label>
+                                    <input type="number" id="prop-font-size" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Font Weight</label>
+                                    <select id="prop-font-weight" onchange="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs bg-white outline-none">
+                                        <option value="normal">Normal</option>
+                                        <option value="bold">Bold</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Tk Relief</label>
+                                    <select id="prop-relief" onchange="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs bg-white outline-none">
+                                        <option value="flat">flat</option>
+                                        <option value="raised">raised</option>
+                                        <option value="sunken">sunken</option>
+                                        <option value="groove">groove</option>
+                                        <option value="ridge">ridge</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-medium text-slate-500">Border Width</label>
+                                    <input type="number" id="prop-bd" oninput="updateCurrentElement()" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="duplicateCurrentElement()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 rounded text-xs font-bold transition-all border border-slate-200">
+                                Duplicate Widget
+                            </button>
+                            <button onclick="deleteCurrentElement()" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-600 py-2 rounded text-xs font-bold transition-all border border-rose-200">
+                                Delete Widget
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WINDOW CONFIGURATION TAB CONTENT -->
+                <div id="tab-window" class="hidden space-y-4">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Tk Window Title</label>
+                            <input type="text" id="win-title" oninput="updateWindowSettings()" value="Generated App Blueprint Layout" class="mt-1 w-full border border-slate-200 rounded p-2 text-xs focus:border-indigo-500 outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Width (px)</label>
+                                <input type="number" id="win-w" oninput="updateWindowSettings()" value="800" class="mt-1 w-full border border-slate-200 rounded p-2 text-xs focus:border-indigo-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Height (px)</label>
+                                <input type="number" id="win-h" oninput="updateWindowSettings()" value="600" class="mt-1 w-full border border-slate-200 rounded p-2 text-xs focus:border-indigo-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Root Background Color</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="color" id="win-bg" oninput="updateWindowSettings()" value="#f8fafc" class="w-10 h-10 rounded border border-slate-200 cursor-pointer">
+                                <input type="text" id="win-bg-hex" oninput="updateWindowHexBg()" value="#f8fafc" class="w-full border border-slate-200 rounded px-2 text-xs font-mono outline-none">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200/60 space-y-2">
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Export & Blueprint Structure</h4>
+                            
+                            <div>
+                                <label class="text-[10px] font-medium text-slate-500">Python Code Format</label>
+                                <select id="win-export-type" class="mt-1 w-full border border-slate-200 rounded p-1.5 text-xs bg-white outline-none">
+                                    <option value="class">Object-Oriented (Tk Class Structure)</option>
+                                    <option value="script">Functional (Sequential Script)</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-1">
+                                <input type="checkbox" id="win-resizable" checked class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                <label for="win-resizable" class="text-xs text-slate-600 font-medium">Resizable Window Context</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+    </div>
+
+    <!-- CODE PREVIEW MODAL -->
+    <div id="preview-modal" class="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-6 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2 text-white">
+                    <span class="text-emerald-400 font-bold">&#128187;</span>
+                    <h3 class="font-bold">Generated Tkinter Python Code</h3>
+                </div>
+                <button onclick="closePreviewModal()" class="text-slate-400 hover:text-white transition-all text-xl">&times;</button>
+            </div>
+            
+            <div class="flex-1 overflow-auto bg-slate-950 p-6">
+                <pre class="text-slate-200 font-mono text-sm leading-relaxed" id="python-preview-code"></pre>
+            </div>
+            
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3 shrink-0">
+                <button onclick="copyToClipboard()" class="bg-slate-800 text-slate-200 hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-all">
+                    Copy to Clipboard
+                </button>
+                <button onclick="exportPythonCode()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-bold transition-all shadow-lg shadow-indigo-500/10">
+                    Download Script
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script src="./js/script.js"></script>
+</body>
+</html>
